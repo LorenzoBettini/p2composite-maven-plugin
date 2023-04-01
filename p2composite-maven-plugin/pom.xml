@@ -148,6 +148,12 @@
 			<build>
 
 				<plugins>
+					<!--
+					IMPORTANT: if mvn is not in a standard location, pass -Dmaven.home=...
+					If mvn is in -Dmaven.home=/opt/homebrew/bin/mvn, pass
+					-Dmaven.home=/opt/homebrew
+					Note: without the "bin"
+					-->
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-invoker-plugin</artifactId>
