@@ -10,7 +10,12 @@ import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.URIUtil;
 import org.eclipse.equinox.p2.core.IProvisioningAgent;
+import org.eclipse.equinox.p2.core.ProvisionException;
+import org.eclipse.equinox.p2.internal.repository.tools.CompositeRepositoryApplication;
+import org.eclipse.equinox.p2.internal.repository.tools.RepositoryDescriptor;
 
 /**
  * Goal which touches a timestamp file.
@@ -40,7 +45,13 @@ public class MyMojo extends AbstractMojo {
 			w = new FileWriter(touch);
 
 			w.write("touch.txt");
-		} catch (IOException e) {
+			
+			CompositeRepositoryApplication app = new CompositeRepositoryApplication(agent);
+			var destination = new RepositoryDescriptor();
+			destination.setLocation(f.toURI());
+			app.addDestination(destination);
+			app.run(new NullProgressMonitor());
+		} catch (IOException | ProvisionException e) {
 			throw new MojoExecutionException("Error creating file " + touch, e);
 		} finally {
 			if (w != null) {
