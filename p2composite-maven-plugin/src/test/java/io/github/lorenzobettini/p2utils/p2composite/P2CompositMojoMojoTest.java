@@ -35,6 +35,17 @@ public class P2CompositMojoMojoTest {
 			.isDirectoryContaining("glob:**compositeContent.xml");
 	}
 
+	@Test
+	public void testAddChild() throws Exception {
+		File pom = getPom("project-add-child");
+		runMojo(pom);
+
+		File expectedOutputDirectory = new File(pom.getAbsoluteFile(), "target/compositerepo");
+		assertThat(expectedOutputDirectory)
+			.isDirectoryContaining("glob:**compositeArtifacts.xml")
+			.isDirectoryContaining("glob:**compositeContent.xml");
+	}
+
 	private P2CompositeMojo runMojo(File pom) throws Exception {
 		P2CompositeMojo myMojo = rule.lookupConfiguredMojo(pom, "run");
 		assertNotNull(myMojo);
@@ -44,7 +55,7 @@ public class P2CompositMojoMojoTest {
 
 	private File getPom(String projectPath) throws Exception {
 		var targetDirectory = new File(
-			TARGET_TEST_CLASSES + projectPath + "target");
+			TARGET_TEST_CLASSES + projectPath + "/target");
 		FileUtils.deleteDirectory(targetDirectory);
 		assertThat(targetDirectory)
 			.doesNotExist();

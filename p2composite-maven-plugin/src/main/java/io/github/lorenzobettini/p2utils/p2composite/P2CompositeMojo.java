@@ -1,6 +1,9 @@
 package io.github.lorenzobettini.p2utils.p2composite;
 
 import java.io.File;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -9,6 +12,7 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.URIUtil;
 import org.eclipse.equinox.p2.core.IProvisioningAgent;
 import org.eclipse.equinox.p2.core.ProvisionException;
 import org.eclipse.equinox.p2.internal.repository.tools.CompositeRepositoryApplication;
@@ -20,10 +24,16 @@ import org.eclipse.equinox.p2.internal.repository.tools.RepositoryDescriptor;
 @Mojo(name = "run", defaultPhase = LifecyclePhase.PACKAGE)
 public class P2CompositeMojo extends AbstractMojo {
 	/**
-	 * Location of the file.
+	 * Location of the generated composite repository.
 	 */
 	@Parameter(defaultValue = "${project.build.directory}/compositerepo", property = "outputDir", required = true)
 	private File outputDirectory;
+
+	/**
+	 * Location of the generated composite repository.
+	 */
+	@Parameter
+	private List<String> childrenToAdd = new ArrayList<>();
 
 	@Component
 	private IProvisioningAgent agent;
@@ -33,9 +43,16 @@ public class P2CompositeMojo extends AbstractMojo {
 			CompositeRepositoryApplication app = new CompositeRepositoryApplication(agent);
 			var destination = new RepositoryDescriptor();
 			destination.setLocation(outputDirectory.toURI());
+			destination.setAtomic("false");
+			destination.setCompressed(false);
 			app.addDestination(destination);
+			for (String child : childrenToAdd) {
+				var childRepo = new RepositoryDescriptor();
+				childRepo.setLocation(URIUtil.fromString(child));
+				app.addChild(childRepo);
+			}
 			app.run(new NullProgressMonitor());
-		} catch (ProvisionException e) {
+		} catch (ProvisionException | URISyntaxException e) {
 			throw new MojoExecutionException("Error creating composite repository", e);
 		}
 	}
