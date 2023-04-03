@@ -1,8 +1,6 @@
 package io.github.lorenzobettini.p2utils.p2composite;
 
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -31,35 +29,14 @@ public class P2CompositeMojo extends AbstractMojo {
 	private IProvisioningAgent agent;
 
 	public void execute() throws MojoExecutionException {
-		File f = outputDirectory;
-
-		if (!f.exists()) {
-			f.mkdirs();
-		}
-
-		File touch = new File(f, "touch.txt");
-
-		FileWriter w = null;
 		try {
-			w = new FileWriter(touch);
-
-			w.write("touch.txt");
-			
 			CompositeRepositoryApplication app = new CompositeRepositoryApplication(agent);
 			var destination = new RepositoryDescriptor();
-			destination.setLocation(f.toURI());
+			destination.setLocation(outputDirectory.toURI());
 			app.addDestination(destination);
 			app.run(new NullProgressMonitor());
-		} catch (IOException | ProvisionException e) {
-			throw new MojoExecutionException("Error creating file " + touch, e);
-		} finally {
-			if (w != null) {
-				try {
-					w.close();
-				} catch (IOException e) {
-					// ignore
-				}
-			}
+		} catch (ProvisionException e) {
+			throw new MojoExecutionException("Error creating composite repository", e);
 		}
 	}
 }
