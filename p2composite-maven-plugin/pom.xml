@@ -33,6 +33,7 @@
 			<artifactId>p2-maven-plugin</artifactId>
 			<version>3.0.4</version>
 		</dependency>
+		<!-- For CompositeRepositoryApplication -->
 		<dependency>
 			<groupId>org.eclipse.platform</groupId>
 			<artifactId>org.eclipse.equinox.p2.repository.tools</artifactId>
