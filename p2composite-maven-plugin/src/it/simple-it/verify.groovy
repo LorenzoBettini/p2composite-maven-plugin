@@ -1,3 +1,5 @@
-File touchFile = new File( basedir, "target/touch.txt" );
+File compositeArtifactsFile = new File( basedir, "target/compositeArtifacts.xml" );
+File compositeContentFile = new File( basedir, "target/compositeContent.xml" );
 
-assert touchFile.isFile()
+assert compositeArtifactsFile.isFile()
+assert compositeContentFile.isFile()
