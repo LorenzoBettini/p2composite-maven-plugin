@@ -8,7 +8,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 import java.io.File;
 
-public class MyMojoTest {
+public class P2CompositMojoMojoTest {
 	@Rule
 	public MojoRule rule = new MojoRule() {
 		@Override
@@ -29,7 +29,7 @@ public class MyMojoTest {
 		assertNotNull(pom);
 		assertTrue(pom.exists());
 
-		MyMojo myMojo = (MyMojo) rule.lookupConfiguredMojo(pom, "touch");
+		P2CompositeMojo myMojo = (P2CompositeMojo) rule.lookupConfiguredMojo(pom, "run");
 		assertNotNull(myMojo);
 		myMojo.execute();
 
@@ -42,13 +42,6 @@ public class MyMojoTest {
 
 		File expectedOutputDirectory = new File(pom.getAbsoluteFile(), "target/test-harness/project-to-test");
 		assertEquals(expectedOutputDirectory, outputDirectory);
-	}
-
-	/** Do not need the MojoRule. */
-	@WithoutMojo
-	@Test
-	public void testSomethingWhichDoesNotNeedTheMojoAndProbablyShouldBeExtractedIntoANewClassOfItsOwn() {
-		assertTrue(true);
 	}
 
 }

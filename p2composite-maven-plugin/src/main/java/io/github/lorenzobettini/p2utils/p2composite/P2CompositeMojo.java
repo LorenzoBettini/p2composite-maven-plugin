@@ -20,8 +20,8 @@ import org.eclipse.equinox.p2.internal.repository.tools.RepositoryDescriptor;
 /**
  * Goal which touches a timestamp file.
  */
-@Mojo(name = "touch", defaultPhase = LifecyclePhase.PROCESS_SOURCES)
-public class MyMojo extends AbstractMojo {
+@Mojo(name = "run", defaultPhase = LifecyclePhase.PACKAGE)
+public class P2CompositeMojo extends AbstractMojo {
 	/**
 	 * Location of the file.
 	 */

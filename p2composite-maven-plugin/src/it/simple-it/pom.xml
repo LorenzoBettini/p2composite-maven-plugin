@@ -24,7 +24,7 @@
             <id>touch</id>
             <phase>validate</phase>
             <goals>
-              <goal>touch</goal>
+              <goal>run</goal>
             </goals>
           </execution>
         </executions>
