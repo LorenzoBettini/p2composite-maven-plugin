@@ -22,7 +22,7 @@ public class P2CompositeMojo extends AbstractMojo {
 	/**
 	 * Location of the file.
 	 */
-	@Parameter(defaultValue = "${project.build.directory}", property = "outputDir", required = true)
+	@Parameter(defaultValue = "${project.build.directory}/compositerepo", property = "outputDir", required = true)
 	private File outputDirectory;
 
 	@Component
