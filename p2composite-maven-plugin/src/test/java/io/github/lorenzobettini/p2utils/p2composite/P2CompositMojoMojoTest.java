@@ -1,7 +1,6 @@
 package io.github.lorenzobettini.p2utils.p2composite;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -26,19 +25,14 @@ public class P2CompositMojoMojoTest {
 	};
 
 	@Test
-	public void testSomething() throws Exception {
+	public void testWithEmptyOutputFolder() throws Exception {
 		File pom = getPom("project-to-test");
-		P2CompositeMojo myMojo = runMojo(pom);
-
-		File outputDirectory = (File) rule.getVariableValueFromObject(myMojo, "outputDirectory");
-		assertNotNull(outputDirectory);
-		assertTrue(outputDirectory.exists());
-
-		File touch = new File(outputDirectory, "touch.txt");
-		assertTrue(touch.exists());
+		runMojo(pom);
 
 		File expectedOutputDirectory = new File(pom.getAbsoluteFile(), "target/test-harness/project-to-test");
-		assertEquals(expectedOutputDirectory, outputDirectory);
+		assertThat(expectedOutputDirectory)
+			.isDirectoryContaining("glob:**compositeArtifacts.xml")
+			.isDirectoryContaining("glob:**compositeContent.xml");
 	}
 
 	private P2CompositeMojo runMojo(File pom) throws Exception {
