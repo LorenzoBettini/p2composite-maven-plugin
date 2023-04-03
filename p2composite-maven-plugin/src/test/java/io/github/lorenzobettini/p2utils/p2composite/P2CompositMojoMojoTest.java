@@ -1,12 +1,14 @@
 package io.github.lorenzobettini.p2utils.p2composite;
 
-import org.apache.maven.plugin.testing.MojoRule;
-import org.apache.maven.plugin.testing.WithoutMojo;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
-import org.junit.Rule;
-import static org.junit.Assert.*;
-import org.junit.Test;
 import java.io.File;
+
+import org.apache.maven.plugin.testing.MojoRule;
+import org.junit.Rule;
+import org.junit.Test;
 
 public class P2CompositMojoMojoTest {
 	@Rule
@@ -20,18 +22,10 @@ public class P2CompositMojoMojoTest {
 		}
 	};
 
-	/**
-	 * @throws Exception if any
-	 */
 	@Test
 	public void testSomething() throws Exception {
-		File pom = new File("target/test-classes/project-to-test/");
-		assertNotNull(pom);
-		assertTrue(pom.exists());
-
-		P2CompositeMojo myMojo = (P2CompositeMojo) rule.lookupConfiguredMojo(pom, "run");
-		assertNotNull(myMojo);
-		myMojo.execute();
+		File pom = getPom("project-to-test");
+		P2CompositeMojo myMojo = runMojo(pom);
 
 		File outputDirectory = (File) rule.getVariableValueFromObject(myMojo, "outputDirectory");
 		assertNotNull(outputDirectory);
@@ -44,4 +38,17 @@ public class P2CompositMojoMojoTest {
 		assertEquals(expectedOutputDirectory, outputDirectory);
 	}
 
+	private P2CompositeMojo runMojo(File pom) throws Exception {
+		P2CompositeMojo myMojo = (P2CompositeMojo) rule.lookupConfiguredMojo(pom, "run");
+		assertNotNull(myMojo);
+		myMojo.execute();
+		return myMojo;
+	}
+
+	private File getPom(String projectPath) {
+		File pom = new File("target/test-classes/" + projectPath);
+		assertNotNull(pom);
+		assertTrue(pom.exists());
+		return pom;
+	}
 }
