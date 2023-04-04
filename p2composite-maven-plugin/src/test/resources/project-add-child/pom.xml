@@ -16,7 +16,7 @@
 				<groupId>io.github.lorenzobettini.p2utils</groupId>
 				<artifactId>p2composite-maven-plugin</artifactId>
 				<configuration>
-					<childrenToAdd>achild</childrenToAdd>
+					<childrenToAdd>child1</childrenToAdd>
 				</configuration>
 			</plugin>
 		</plugins>

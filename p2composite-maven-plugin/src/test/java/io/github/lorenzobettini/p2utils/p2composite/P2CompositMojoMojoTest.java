@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.maven.plugin.testing.MojoRule;
@@ -37,13 +38,23 @@ public class P2CompositMojoMojoTest {
 
 	@Test
 	public void testAddChild() throws Exception {
-		File pom = getPom("project-add-child");
+		String projectPath = "project-add-child";
+		String outputFolder = "target/compositerepo";
+		File pom = getPom(projectPath);
+		prepareChildDirectory(projectPath, outputFolder, "child1");
+		prepareChildDirectory(projectPath, outputFolder, "child2");
 		runMojo(pom);
 
-		File expectedOutputDirectory = new File(pom.getAbsoluteFile(), "target/compositerepo");
+		File expectedOutputDirectory = new File(pom.getAbsoluteFile(), outputFolder);
 		assertThat(expectedOutputDirectory)
 			.isDirectoryContaining("glob:**compositeArtifacts.xml")
 			.isDirectoryContaining("glob:**compositeContent.xml");
+	}
+
+	private void prepareChildDirectory(String projectPath, String outputFolder, String childDirName) throws IOException {
+		FileUtils.copyDirectoryToDirectory(
+			new File(TARGET_TEST_CLASSES + projectPath, childDirName),
+			new File(TARGET_TEST_CLASSES + projectPath, outputFolder));
 	}
 
 	private P2CompositeMojo runMojo(File pom) throws Exception {
