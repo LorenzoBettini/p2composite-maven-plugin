@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.stream.Stream;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.maven.plugin.testing.MojoRule;
@@ -30,7 +31,8 @@ public class P2CompositMojoMojoTest {
 		File pom = getPom("project-to-test");
 		runMojo(pom);
 
-		File expectedOutputDirectory = new File(pom.getAbsoluteFile(), "target/test-harness/project-to-test");
+		File expectedOutputDirectory = new File(pom.getAbsoluteFile(),
+				"target/test-harness/project-to-test");
 		assertGeneratedCompositeFiles(expectedOutputDirectory);
 	}
 
@@ -45,12 +47,7 @@ public class P2CompositMojoMojoTest {
 
 		File expectedOutputDirectory = new File(pom.getAbsoluteFile(), outputFolder);
 		assertGeneratedCompositeFiles(expectedOutputDirectory);
-		assertThat(new File(expectedOutputDirectory, "compositeArtifacts.xml"))
-			.content()
-			.contains("child1").contains("child2");
-		assertThat(new File(expectedOutputDirectory, "compositeContent.xml"))
-			.content()
-			.contains("child1").contains("child2");
+		assertGeneratedChildren(expectedOutputDirectory, "child1", "child2");
 	}
 
 	private void prepareChildDirectory(String projectPath, String outputFolder, String childDirName) throws IOException {
@@ -83,5 +80,19 @@ public class P2CompositMojoMojoTest {
 			.isDirectoryContaining("glob:**compositeArtifacts.xml")
 			.isDirectoryContaining("glob:**compositeContent.xml")
 			.isDirectoryContaining("glob:**p2.index");
+	}
+
+	private void assertGeneratedChildren(File expectedOutputDirectory, String... expectedChildren) {
+		var compositeArtifactsContents = assertThat(new File(expectedOutputDirectory, "compositeArtifacts.xml"))
+			.content();
+		var compositeContentContents = assertThat(new File(expectedOutputDirectory, "compositeContent.xml"))
+			.content();
+		var expectedChildrenLocations = Stream.of(expectedChildren)
+				.map(it -> String.format("<child location='%s'/>", it))
+				.toList();
+		compositeArtifactsContents
+			.contains(expectedChildrenLocations);
+		compositeContentContents
+			.contains(expectedChildrenLocations);
 	}
 }
