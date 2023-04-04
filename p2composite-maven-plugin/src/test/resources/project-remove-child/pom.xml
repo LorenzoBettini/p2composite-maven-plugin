@@ -16,7 +16,11 @@
 				<groupId>io.github.lorenzobettini.p2utils</groupId>
 				<artifactId>p2composite-maven-plugin</artifactId>
 				<configuration>
-					<outputDirectory>target/test-harness/project-to-test</outputDirectory>
+					<childrenToRemove>
+						<childToRemove>nonexistent</childToRemove>
+						<childToRemove>child2</childToRemove>
+					</childrenToRemove>
+					<outputDirectory>target/initialrepo</outputDirectory>
 				</configuration>
 			</plugin>
 		</plugins>

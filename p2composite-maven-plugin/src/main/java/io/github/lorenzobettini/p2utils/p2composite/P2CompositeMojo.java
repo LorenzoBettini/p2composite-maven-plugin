@@ -44,10 +44,16 @@ public class P2CompositeMojo extends AbstractMojo {
 	private boolean atomic;
 
 	/**
-	 * Location of the generated composite repository.
+	 * List of repositories to add to the composite.
 	 */
 	@Parameter
 	private List<String> childrenToAdd = new ArrayList<>();
+
+	/**
+	 * List of repositories to remove from the composite.
+	 */
+	@Parameter
+	private List<String> childrenToRemove = new ArrayList<>();
 
 	@Component
 	private IProvisioningAgent agent;
@@ -66,9 +72,10 @@ public class P2CompositeMojo extends AbstractMojo {
 			destination.setCompressed(compressed);
 			app.addDestination(destination);
 			for (String child : childrenToAdd) {
-				var childRepo = new RepositoryDescriptor();
-				childRepo.setLocation(URIUtil.fromString(child));
-				app.addChild(childRepo);
+				app.addChild(fromStringToRepositoryDescriptor(child));
+			}
+			for (String child : childrenToRemove) {
+				app.removeChild(fromStringToRepositoryDescriptor(child));
 			}
 			app.run(new NullProgressMonitor());
 			Files.writeString(new File(outputDirectory, "p2.index").toPath(),
@@ -76,5 +83,11 @@ public class P2CompositeMojo extends AbstractMojo {
 		} catch (ProvisionException | URISyntaxException | IOException e) {
 			throw new MojoExecutionException("Error creating composite repository", e);
 		}
+	}
+
+	private RepositoryDescriptor fromStringToRepositoryDescriptor(String child) throws URISyntaxException {
+		var childRepo = new RepositoryDescriptor();
+		childRepo.setLocation(URIUtil.fromString(child));
+		return childRepo;
 	}
 }

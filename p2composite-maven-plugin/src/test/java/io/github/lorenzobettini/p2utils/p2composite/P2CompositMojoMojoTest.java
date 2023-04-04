@@ -52,6 +52,20 @@ public class P2CompositMojoMojoTest {
 	}
 
 	@Test
+	public void testRemoveChild() throws Exception {
+		String projectPath = "project-remove-child";
+		String outputFolder = "target";
+		File pom = getPom(projectPath);
+		prepareChildDirectory(projectPath, outputFolder, "initialrepo");
+		runMojo(pom);
+
+		File expectedOutputDirectory = new File(pom.getAbsoluteFile(), outputFolder + "/initialrepo");
+		assertGeneratedCompositeFiles(expectedOutputDirectory);
+		assertGeneratedChildren(expectedOutputDirectory, false, "child1");
+		assertGeneratedChildrenDoNotContain(expectedOutputDirectory, "child2");
+	}
+
+	@Test
 	public void testAddChildWithOptions() throws Exception {
 		String projectPath = "project-add-child-with-options";
 		String outputFolder = "target/compositerepo";
@@ -120,6 +134,22 @@ public class P2CompositMojoMojoTest {
 			.contains(expectedChildrenLocations)
 			.contains(String.format("<property name='p2.atomic.composite.loading' value='%s'/>",
 				expectedAtomic));
+	}
+
+	private void assertGeneratedChildrenDoNotContain(File expectedOutputDirectory, String... nonExpectedChildren) {
+		var compositeArtifactsContents = assertThat(new File(expectedOutputDirectory, "compositeArtifacts.xml"))
+			.content();
+		var compositeContentContents = assertThat(new File(expectedOutputDirectory, "compositeContent.xml"))
+			.content();
+		var nonExpectedChildrenLocations = Stream.of(nonExpectedChildren)
+				.map(it -> String.format("<child location='%s'/>", it))
+				.toList();
+		compositeArtifactsContents
+			.asString()
+			.doesNotContain(nonExpectedChildrenLocations);
+		compositeContentContents
+			.asString()
+			.doesNotContain(nonExpectedChildrenLocations);
 	}
 
 	private void assertGeneratedChildrenCompressed(File expectedOutputDirectory, boolean expectedAtomic, String... expectedChildren) throws Exception {
