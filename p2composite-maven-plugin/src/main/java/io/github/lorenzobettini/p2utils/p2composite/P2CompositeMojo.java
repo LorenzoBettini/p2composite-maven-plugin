@@ -32,6 +32,18 @@ public class P2CompositeMojo extends AbstractMojo {
 	private File outputDirectory;
 
 	/**
+	 * Whether to compress the composite content/artifact xml into a jar.
+	 */
+	@Parameter(defaultValue = "false")
+	private boolean compressed;
+
+	/**
+	 * Whether the composite repository will fail to load if any of its children fail to load.
+	 */
+	@Parameter(defaultValue = "false")
+	private boolean atomic;
+
+	/**
 	 * Location of the generated composite repository.
 	 */
 	@Parameter
@@ -50,8 +62,8 @@ public class P2CompositeMojo extends AbstractMojo {
 			CompositeRepositoryApplication app = new CompositeRepositoryApplication(agent);
 			var destination = new RepositoryDescriptor();
 			destination.setLocation(outputDirectory.toURI());
-			destination.setAtomic("false");
-			destination.setCompressed(false);
+			destination.setAtomic("" + atomic);
+			destination.setCompressed(compressed);
 			app.addDestination(destination);
 			for (String child : childrenToAdd) {
 				var childRepo = new RepositoryDescriptor();

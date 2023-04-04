@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.jar.JarFile;
 import java.util.stream.Stream;
 
 import org.apache.commons.io.FileUtils;
@@ -47,7 +48,21 @@ public class P2CompositMojoMojoTest {
 
 		File expectedOutputDirectory = new File(pom.getAbsoluteFile(), outputFolder);
 		assertGeneratedCompositeFiles(expectedOutputDirectory);
-		assertGeneratedChildren(expectedOutputDirectory, "child1", "child2");
+		assertGeneratedChildren(expectedOutputDirectory, false, "child1", "child2");
+	}
+
+	@Test
+	public void testAddChildWithOptions() throws Exception {
+		String projectPath = "project-add-child-with-options";
+		String outputFolder = "target/compositerepo";
+		File pom = getPom(projectPath);
+		prepareChildDirectory(projectPath, outputFolder, "child1");
+		prepareChildDirectory(projectPath, outputFolder, "child2");
+		runMojo(pom);
+
+		File expectedOutputDirectory = new File(pom.getAbsoluteFile(), outputFolder);
+		assertGeneratedCompositeFilesCompressed(expectedOutputDirectory);
+		assertGeneratedChildrenCompressed(expectedOutputDirectory, true, "child1", "child2");
 	}
 
 	private void prepareChildDirectory(String projectPath, String outputFolder, String childDirName) throws IOException {
@@ -82,7 +97,14 @@ public class P2CompositMojoMojoTest {
 			.isDirectoryContaining("glob:**p2.index");
 	}
 
-	private void assertGeneratedChildren(File expectedOutputDirectory, String... expectedChildren) {
+	private void assertGeneratedCompositeFilesCompressed(File expectedOutputDirectory) {
+		assertThat(expectedOutputDirectory)
+			.isDirectoryContaining("glob:**compositeArtifacts.jar")
+			.isDirectoryContaining("glob:**compositeContent.jar")
+			.isDirectoryContaining("glob:**p2.index");
+	}
+
+	private void assertGeneratedChildren(File expectedOutputDirectory, boolean expectedAtomic, String... expectedChildren) {
 		var compositeArtifactsContents = assertThat(new File(expectedOutputDirectory, "compositeArtifacts.xml"))
 			.content();
 		var compositeContentContents = assertThat(new File(expectedOutputDirectory, "compositeContent.xml"))
@@ -91,8 +113,33 @@ public class P2CompositMojoMojoTest {
 				.map(it -> String.format("<child location='%s'/>", it))
 				.toList();
 		compositeArtifactsContents
-			.contains(expectedChildrenLocations);
+			.contains(expectedChildrenLocations)
+			.contains(String.format("<property name='p2.atomic.composite.loading' value='%s'/>",
+				expectedAtomic));
 		compositeContentContents
-			.contains(expectedChildrenLocations);
+			.contains(expectedChildrenLocations)
+			.contains(String.format("<property name='p2.atomic.composite.loading' value='%s'/>",
+				expectedAtomic));
+	}
+
+	private void assertGeneratedChildrenCompressed(File expectedOutputDirectory, boolean expectedAtomic, String... expectedChildren) throws Exception {
+		var expectedChildrenLocations = Stream.of(expectedChildren)
+				.map(it -> String.format("<child location='%s'/>", it))
+				.toList();
+		assertThat(getJarContents(expectedOutputDirectory, "compositeArtifacts.jar"))
+			.contains(expectedChildrenLocations)
+			.contains(String.format("<property name='p2.atomic.composite.loading' value='%s'/>",
+					expectedAtomic));
+		assertThat(getJarContents(expectedOutputDirectory, "compositeContent.jar"))
+			.contains(expectedChildrenLocations)
+			.contains(String.format("<property name='p2.atomic.composite.loading' value='%s'/>",
+					expectedAtomic));
+	}
+
+	private String getJarContents(File expectedOutputDirectory, String jarFileName) throws IOException {
+		var jarFile = new JarFile(new File(expectedOutputDirectory, jarFileName));
+		var jarEntry = jarFile.getJarEntry(jarFile.entries().nextElement().getName());
+		var is = jarFile.getInputStream(jarEntry);
+		return new String(is.readAllBytes());
 	}
 }
