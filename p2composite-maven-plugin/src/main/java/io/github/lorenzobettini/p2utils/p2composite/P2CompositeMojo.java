@@ -1,7 +1,9 @@
 package io.github.lorenzobettini.p2utils.p2composite;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +40,11 @@ public class P2CompositeMojo extends AbstractMojo {
 	@Component
 	private IProvisioningAgent agent;
 
+	private static final String P2_INDEX_CONTENTS = """
+			version=1
+			metadata.repository.factory.order=compositeContent.xml,\\!
+			artifact.repository.factory.order=compositeArtifacts.xml,\\!""";
+
 	public void execute() throws MojoExecutionException {
 		try {
 			CompositeRepositoryApplication app = new CompositeRepositoryApplication(agent);
@@ -52,7 +59,9 @@ public class P2CompositeMojo extends AbstractMojo {
 				app.addChild(childRepo);
 			}
 			app.run(new NullProgressMonitor());
-		} catch (ProvisionException | URISyntaxException e) {
+			Files.writeString(new File(outputDirectory, "p2.index").toPath(),
+					P2_INDEX_CONTENTS);
+		} catch (ProvisionException | URISyntaxException | IOException e) {
 			throw new MojoExecutionException("Error creating composite repository", e);
 		}
 	}

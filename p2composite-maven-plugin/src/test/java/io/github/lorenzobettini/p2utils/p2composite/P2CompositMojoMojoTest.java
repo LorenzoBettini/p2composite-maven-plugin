@@ -31,9 +31,7 @@ public class P2CompositMojoMojoTest {
 		runMojo(pom);
 
 		File expectedOutputDirectory = new File(pom.getAbsoluteFile(), "target/test-harness/project-to-test");
-		assertThat(expectedOutputDirectory)
-			.isDirectoryContaining("glob:**compositeArtifacts.xml")
-			.isDirectoryContaining("glob:**compositeContent.xml");
+		assertGeneratedCompositeFiles(expectedOutputDirectory);
 	}
 
 	@Test
@@ -46,9 +44,7 @@ public class P2CompositMojoMojoTest {
 		runMojo(pom);
 
 		File expectedOutputDirectory = new File(pom.getAbsoluteFile(), outputFolder);
-		assertThat(expectedOutputDirectory)
-			.isDirectoryContaining("glob:**compositeArtifacts.xml")
-			.isDirectoryContaining("glob:**compositeContent.xml");
+		assertGeneratedCompositeFiles(expectedOutputDirectory);
 		assertThat(new File(expectedOutputDirectory, "compositeArtifacts.xml"))
 			.content()
 			.contains("child1").contains("child2");
@@ -80,5 +76,12 @@ public class P2CompositMojoMojoTest {
 		assertNotNull(pom);
 		assertTrue(pom.exists());
 		return pom;
+	}
+
+	private void assertGeneratedCompositeFiles(File expectedOutputDirectory) {
+		assertThat(expectedOutputDirectory)
+			.isDirectoryContaining("glob:**compositeArtifacts.xml")
+			.isDirectoryContaining("glob:**compositeContent.xml")
+			.isDirectoryContaining("glob:**p2.index");
 	}
 }
