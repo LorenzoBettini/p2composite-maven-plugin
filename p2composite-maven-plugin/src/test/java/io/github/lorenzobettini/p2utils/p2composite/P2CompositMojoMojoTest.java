@@ -49,6 +49,12 @@ public class P2CompositMojoMojoTest {
 		assertThat(expectedOutputDirectory)
 			.isDirectoryContaining("glob:**compositeArtifacts.xml")
 			.isDirectoryContaining("glob:**compositeContent.xml");
+		assertThat(new File(expectedOutputDirectory, "compositeArtifacts.xml"))
+			.content()
+			.contains("child1").contains("child2");
+		assertThat(new File(expectedOutputDirectory, "compositeContent.xml"))
+			.content()
+			.contains("child1").contains("child2");
 	}
 
 	private void prepareChildDirectory(String projectPath, String outputFolder, String childDirName) throws IOException {
