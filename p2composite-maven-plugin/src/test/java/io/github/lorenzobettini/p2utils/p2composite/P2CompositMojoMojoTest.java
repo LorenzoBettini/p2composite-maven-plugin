@@ -2,7 +2,6 @@ package io.github.lorenzobettini.p2utils.p2composite;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -100,7 +99,7 @@ public class P2CompositMojoMojoTest {
 			.doesNotExist();
 		File pom = new File(TARGET_TEST_CLASSES + projectPath);
 		assertNotNull(pom);
-		assertTrue(pom.exists());
+		assertThat(pom).exists();
 		return pom;
 	}
 
