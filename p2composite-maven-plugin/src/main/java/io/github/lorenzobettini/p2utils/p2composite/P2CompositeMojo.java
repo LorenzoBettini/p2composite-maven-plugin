@@ -79,14 +79,18 @@ public class P2CompositeMojo extends AbstractMojo {
 			destination.setName(name);
 			app.addDestination(destination);
 			for (String child : childrenToAdd) {
+				getLog().info("Adding " + child);
 				app.addChild(fromStringToRepositoryDescriptor(child));
 			}
 			for (String child : childrenToRemove) {
+				getLog().info("Removing " + child);
 				app.removeChild(fromStringToRepositoryDescriptor(child));
 			}
 			app.run(new NullProgressMonitor());
+			getLog().info("Generating p2.index");
 			Files.writeString(new File(outputDirectory, "p2.index").toPath(),
 					P2_INDEX_CONTENTS);
+			getLog().info("Done");
 		} catch (ProvisionException | URISyntaxException | IOException e) {
 			throw new MojoExecutionException("Error creating composite repository", e);
 		}
