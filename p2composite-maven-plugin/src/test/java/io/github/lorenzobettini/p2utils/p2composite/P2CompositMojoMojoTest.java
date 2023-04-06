@@ -15,6 +15,8 @@ import org.junit.Test;
 
 public class P2CompositMojoMojoTest {
 	private static final String TARGET_TEST_CLASSES = "target/test-classes/";
+	private static final String TEST_REPOS = TARGET_TEST_CLASSES + "test-repos";
+
 	@Rule
 	public MojoRule rule = new MojoRule() {
 		@Override
@@ -41,8 +43,8 @@ public class P2CompositMojoMojoTest {
 		String projectPath = "project-add-child";
 		String outputFolder = "target/compositerepo";
 		File pom = getPom(projectPath);
-		prepareChildDirectory(projectPath, outputFolder, "child1");
-		prepareChildDirectory(projectPath, outputFolder, "child2");
+		prepareChildDirectory(TEST_REPOS, projectPath, outputFolder, "child1");
+		prepareChildDirectory(TEST_REPOS, projectPath, outputFolder, "child2");
 		runMojo(pom);
 
 		File expectedOutputDirectory = new File(pom.getAbsoluteFile(), outputFolder);
@@ -55,8 +57,8 @@ public class P2CompositMojoMojoTest {
 		String projectPath = "project-add-child-relative";
 		String outputFolder = "target/compositerepo";
 		File pom = getPom(projectPath);
-		prepareChildDirectory(projectPath, "target", "child1");
-		prepareChildDirectory(projectPath, "target/subdir", "child2");
+		prepareChildDirectory(TEST_REPOS, projectPath, "target", "child1");
+		prepareChildDirectory(TEST_REPOS, projectPath, "target/subdir", "child2");
 		runMojo(pom);
 
 		File expectedOutputDirectory = new File(pom.getAbsoluteFile(), outputFolder);
@@ -70,7 +72,9 @@ public class P2CompositMojoMojoTest {
 		String projectPath = "project-remove-child";
 		String outputFolder = "target";
 		File pom = getPom(projectPath);
-		prepareChildDirectory(projectPath, outputFolder, "initialrepo");
+		prepareChildDirectory(TARGET_TEST_CLASSES + projectPath,
+				projectPath,
+				outputFolder, "initialrepo");
 		runMojo(pom);
 
 		File expectedOutputDirectory = new File(pom.getAbsoluteFile(), outputFolder + "/initialrepo");
@@ -84,8 +88,8 @@ public class P2CompositMojoMojoTest {
 		String projectPath = "project-add-child-with-options";
 		String outputFolder = "target/compositerepo";
 		File pom = getPom(projectPath);
-		prepareChildDirectory(projectPath, outputFolder, "child1");
-		prepareChildDirectory(projectPath, outputFolder, "child2");
+		prepareChildDirectory(TEST_REPOS, projectPath, outputFolder, "child1");
+		prepareChildDirectory(TEST_REPOS, projectPath, outputFolder, "child2");
 		runMojo(pom);
 
 		File expectedOutputDirectory = new File(pom.getAbsoluteFile(), outputFolder);
@@ -98,7 +102,8 @@ public class P2CompositMojoMojoTest {
 		String projectPath = "project-add-remove-child";
 		String outputFolder = "target";
 		File pom = getPom(projectPath);
-		prepareChildDirectory(projectPath, outputFolder, "initialrepo");
+		prepareChildDirectory(TARGET_TEST_CLASSES + projectPath,
+				projectPath, outputFolder, "initialrepo");
 		runMojo(pom);
 
 		File expectedOutputDirectory = new File(pom.getAbsoluteFile(), outputFolder + "/initialrepo");
@@ -107,9 +112,9 @@ public class P2CompositMojoMojoTest {
 		assertGeneratedChildrenDoNotContain(expectedOutputDirectory, "child2");
 	}
 
-	private void prepareChildDirectory(String projectPath, String outputFolder, String childDirName) throws IOException {
+	private void prepareChildDirectory(String sourceFolder, String projectPath, String outputFolder, String childDirName) throws IOException {
 		FileUtils.copyDirectoryToDirectory(
-			new File(TARGET_TEST_CLASSES + projectPath, childDirName),
+			new File(sourceFolder, childDirName),
 			new File(TARGET_TEST_CLASSES + projectPath, outputFolder));
 	}
 
