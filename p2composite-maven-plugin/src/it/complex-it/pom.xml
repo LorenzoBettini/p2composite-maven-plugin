@@ -29,6 +29,16 @@
 						</goals>
 					</execution>
 				</executions>
+				<configuration>
+					<outputDirectory>composite</outputDirectory>
+					<childrenToAdd>
+						<childToAdd>../test-repos/child1</childToAdd>
+						<childToAdd>../test-repos/child2</childToAdd>
+						<childToAdd>../test-repos/child3</childToAdd>
+					</childrenToAdd>
+					<atomic>true</atomic>
+					<compressed>true</compressed>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
