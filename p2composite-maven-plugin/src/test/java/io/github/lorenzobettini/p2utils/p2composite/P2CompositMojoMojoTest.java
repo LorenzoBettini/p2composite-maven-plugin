@@ -70,11 +70,15 @@ public class P2CompositMojoMojoTest {
 	@Test
 	public void testRemoveChild() throws Exception {
 		String projectPath = "project-remove-child";
-		String outputFolder = "target";
+		String outputFolder = "target/";
 		File pom = getPom(projectPath);
 		prepareChildDirectory(TARGET_TEST_CLASSES + projectPath,
 				projectPath,
 				outputFolder, "initialrepo");
+		prepareChildDirectory(TEST_REPOS, projectPath,
+				outputFolder + "initialrepo", "child1");
+		prepareChildDirectory(TEST_REPOS, projectPath,
+				outputFolder + "initialrepo", "child2");
 		runMojo(pom);
 
 		File expectedOutputDirectory = new File(pom.getAbsoluteFile(), outputFolder + "/initialrepo");
@@ -100,10 +104,16 @@ public class P2CompositMojoMojoTest {
 	@Test
 	public void testAtomicAddAndRemoveWithReferenceToNonExistentChild() throws Exception {
 		String projectPath = "project-add-remove-child";
-		String outputFolder = "target";
+		String outputFolder = "target/";
 		File pom = getPom(projectPath);
 		prepareChildDirectory(TARGET_TEST_CLASSES + projectPath,
 				projectPath, outputFolder, "initialrepo");
+		prepareChildDirectory(TEST_REPOS, projectPath,
+				outputFolder + "initialrepo", "child1");
+		prepareChildDirectory(TEST_REPOS, projectPath,
+				outputFolder + "initialrepo", "child2");
+		prepareChildDirectory(TEST_REPOS, projectPath,
+				outputFolder + "initialrepo", "child3");
 		runMojo(pom);
 
 		File expectedOutputDirectory = new File(pom.getAbsoluteFile(), outputFolder + "/initialrepo");
