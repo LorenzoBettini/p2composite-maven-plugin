@@ -13,7 +13,7 @@ import org.apache.maven.plugin.testing.MojoRule;
 import org.junit.Rule;
 import org.junit.Test;
 
-public class P2CompositMojoMojoTest {
+public class P2CompositeMojoTest {
 	private static final String TARGET_TEST_CLASSES = "target/test-classes/";
 	private static final String TEST_REPOS = TARGET_TEST_CLASSES + "test-repos";
 
