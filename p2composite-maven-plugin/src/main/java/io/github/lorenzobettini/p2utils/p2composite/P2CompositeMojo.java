@@ -32,6 +32,12 @@ public class P2CompositeMojo extends AbstractMojo {
 	private File outputDirectory;
 
 	/**
+	 * Name for the composite repository.
+	 */
+	@Parameter(defaultValue = "Composite Artifact Repository")
+	private String name;
+
+	/**
 	 * Whether to compress the composite content/artifact xml into a jar.
 	 */
 	@Parameter(defaultValue = "false")
@@ -70,6 +76,7 @@ public class P2CompositeMojo extends AbstractMojo {
 			destination.setLocation(outputDirectory.toURI());
 			destination.setAtomic("" + atomic);
 			destination.setCompressed(compressed);
+			destination.setName(name);
 			app.addDestination(destination);
 			for (String child : childrenToAdd) {
 				app.addChild(fromStringToRepositoryDescriptor(child));

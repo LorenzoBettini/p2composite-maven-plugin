@@ -49,7 +49,22 @@ public class P2CompositMojoMojoTest {
 
 		File expectedOutputDirectory = new File(pom.getAbsoluteFile(), outputFolder);
 		assertGeneratedCompositeFiles(expectedOutputDirectory);
-		assertGeneratedChildren(expectedOutputDirectory, false, "child1", "child2");
+		assertGeneratedChildren(expectedOutputDirectory, false, "Composite Artifact Repository", "child1", "child2");
+	}
+
+	@Test
+	public void testCustomName() throws Exception {
+		String projectPath = "project-custom-name";
+		String outputFolder = "target/compositerepo";
+		File pom = getPom(projectPath);
+		prepareChildDirectory(TEST_REPOS, projectPath, outputFolder, "child1");
+		prepareChildDirectory(TEST_REPOS, projectPath, outputFolder, "child2");
+		runMojo(pom);
+
+		File expectedOutputDirectory = new File(pom.getAbsoluteFile(), outputFolder);
+		assertGeneratedCompositeFiles(expectedOutputDirectory);
+		assertGeneratedChildren(expectedOutputDirectory, false,
+				"My Custom Composite Repository", "child1", "child2");
 	}
 
 	@Test
@@ -64,7 +79,7 @@ public class P2CompositMojoMojoTest {
 		File expectedOutputDirectory = new File(pom.getAbsoluteFile(), outputFolder);
 		assertGeneratedCompositeFiles(expectedOutputDirectory);
 		assertGeneratedChildren(expectedOutputDirectory, false,
-			"../child1", "../subdir/child2");
+			"Composite Artifact Repository", "../child1", "../subdir/child2");
 	}
 
 	@Test
@@ -83,7 +98,7 @@ public class P2CompositMojoMojoTest {
 
 		File expectedOutputDirectory = new File(pom.getAbsoluteFile(), outputFolder + "/initialrepo");
 		assertGeneratedCompositeFiles(expectedOutputDirectory);
-		assertGeneratedChildren(expectedOutputDirectory, false, "child1");
+		assertGeneratedChildren(expectedOutputDirectory, false, "Composite Artifact Repository", "child1");
 		assertGeneratedChildrenDoNotContain(expectedOutputDirectory, "child2");
 	}
 
@@ -118,7 +133,7 @@ public class P2CompositMojoMojoTest {
 
 		File expectedOutputDirectory = new File(pom.getAbsoluteFile(), outputFolder + "/initialrepo");
 		assertGeneratedCompositeFiles(expectedOutputDirectory);
-		assertGeneratedChildren(expectedOutputDirectory, true, "child1", "child3");
+		assertGeneratedChildren(expectedOutputDirectory, true, "Composite Artifact Repository", "child1", "child3");
 		assertGeneratedChildrenDoNotContain(expectedOutputDirectory, "child2");
 	}
 
@@ -161,7 +176,7 @@ public class P2CompositMojoMojoTest {
 			.isDirectoryContaining("glob:**p2.index");
 	}
 
-	private void assertGeneratedChildren(File expectedOutputDirectory, boolean expectedAtomic, String... expectedChildren) {
+	private void assertGeneratedChildren(File expectedOutputDirectory, boolean expectedAtomic, String expectedName, String... expectedChildren) {
 		var compositeArtifactsContents = assertThat(new File(expectedOutputDirectory, "compositeArtifacts.xml"))
 			.content();
 		var compositeContentContents = assertThat(new File(expectedOutputDirectory, "compositeContent.xml"))
@@ -169,14 +184,22 @@ public class P2CompositMojoMojoTest {
 		var expectedChildrenLocations = Stream.of(expectedChildren)
 				.map(it -> String.format("<child location='%s'/>", it))
 				.toList();
+		var expectedRepositoryName =
+				String.format("<repository name='%s'", expectedName);
 		compositeArtifactsContents
-			.contains(expectedChildrenLocations)
+			.contains(expectedRepositoryName);
+		compositeContentContents
+			.contains(expectedRepositoryName);
+		compositeArtifactsContents
 			.contains(String.format("<property name='p2.atomic.composite.loading' value='%s'/>",
 				expectedAtomic));
 		compositeContentContents
-			.contains(expectedChildrenLocations)
 			.contains(String.format("<property name='p2.atomic.composite.loading' value='%s'/>",
 				expectedAtomic));
+		compositeArtifactsContents
+			.contains(expectedChildrenLocations);
+		compositeContentContents
+			.contains(expectedChildrenLocations);
 	}
 
 	private void assertGeneratedChildrenDoNotContain(File expectedOutputDirectory, String... nonExpectedChildren) {
