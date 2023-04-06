@@ -51,6 +51,21 @@ public class P2CompositMojoMojoTest {
 	}
 
 	@Test
+	public void testAddChildRelativePath() throws Exception {
+		String projectPath = "project-add-child-relative";
+		String outputFolder = "target/compositerepo";
+		File pom = getPom(projectPath);
+		prepareChildDirectory(projectPath, "target", "child1");
+		prepareChildDirectory(projectPath, "target/subdir", "child2");
+		runMojo(pom);
+
+		File expectedOutputDirectory = new File(pom.getAbsoluteFile(), outputFolder);
+		assertGeneratedCompositeFiles(expectedOutputDirectory);
+		assertGeneratedChildren(expectedOutputDirectory, false,
+			"../child1", "../subdir/child2");
+	}
+
+	@Test
 	public void testRemoveChild() throws Exception {
 		String projectPath = "project-remove-child";
 		String outputFolder = "target";
