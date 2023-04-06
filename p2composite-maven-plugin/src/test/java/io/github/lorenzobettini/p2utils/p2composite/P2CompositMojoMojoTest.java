@@ -78,6 +78,20 @@ public class P2CompositMojoMojoTest {
 		assertGeneratedChildrenCompressed(expectedOutputDirectory, true, "child1", "child2");
 	}
 
+	@Test
+	public void testAtomicAddAndRemoveWithReferenceToNonExistentChild() throws Exception {
+		String projectPath = "project-add-remove-child";
+		String outputFolder = "target";
+		File pom = getPom(projectPath);
+		prepareChildDirectory(projectPath, outputFolder, "initialrepo");
+		runMojo(pom);
+
+		File expectedOutputDirectory = new File(pom.getAbsoluteFile(), outputFolder + "/initialrepo");
+		assertGeneratedCompositeFiles(expectedOutputDirectory);
+		assertGeneratedChildren(expectedOutputDirectory, true, "child1", "child3");
+		assertGeneratedChildrenDoNotContain(expectedOutputDirectory, "child2");
+	}
+
 	private void prepareChildDirectory(String projectPath, String outputFolder, String childDirName) throws IOException {
 		FileUtils.copyDirectoryToDirectory(
 			new File(TARGET_TEST_CLASSES + projectPath, childDirName),
