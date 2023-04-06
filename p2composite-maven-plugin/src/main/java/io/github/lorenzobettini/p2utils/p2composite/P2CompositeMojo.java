@@ -21,7 +21,10 @@ import org.eclipse.equinox.p2.internal.repository.tools.CompositeRepositoryAppli
 import org.eclipse.equinox.p2.internal.repository.tools.RepositoryDescriptor;
 
 /**
- * Goal which touches a timestamp file.
+ * Goal which creates or updates an Eclipse p2 composite site, by
+ * adding/removing child repositories.
+ * 
+ * @author Lorenzo Bettini
  */
 @Mojo(name = "run", defaultPhase = LifecyclePhase.PACKAGE)
 public class P2CompositeMojo extends AbstractMojo {
