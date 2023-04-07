@@ -29,26 +29,23 @@
 	</properties>
 
 	<dependencies>
+		<!-- It's a transitive dependency of p2-maven-plugin,
+			but we use it, so better make it explicit -->
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
 			<version>2.11.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.platform</groupId>
-			<artifactId>org.eclipse.equinox.common</artifactId>
-			<version>3.17.100</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.tycho</groupId>
-			<artifactId>p2-maven-plugin</artifactId>
-			<version>${tycho-version}</version>
 		</dependency>
 		<!-- For CompositeRepositoryApplication -->
 		<dependency>
 			<groupId>org.eclipse.platform</groupId>
 			<artifactId>org.eclipse.equinox.p2.repository.tools</artifactId>
 			<version>2.3.300</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.tycho</groupId>
+			<artifactId>p2-maven-plugin</artifactId>
+			<version>${tycho-version}</version>
 		</dependency>
 		<!-- Force this version of dependency required by org.eclipse.sisu.osgi.connect
 			To avoid:
