@@ -40,6 +40,20 @@ public class P2CopyMojoTest {
 			.isNotEmptyDirectory();
 	}
 
+	@Test
+	public void testCopyWithOptions() throws Exception {
+		String projectPath = "project-copy-repository-with-options";
+		String outputFolder = "target/customrepo";
+		File pom = getPom(projectPath);
+		prepareSourceDirectory(TEST_REPOS, projectPath, "target", "child1");
+		runMojo(pom);
+
+		File expectedOutputDirectory = new File(pom.getAbsoluteFile(), outputFolder);
+		File expectedCopiedDirectory = new File(expectedOutputDirectory, "child1");
+		assertThat(expectedCopiedDirectory)
+			.isNotEmptyDirectory();
+	}
+
 	private void prepareSourceDirectory(String sourceFolder, String projectPath, String outputFolder, String childDirName) throws IOException {
 		FileUtils.copyDirectoryToDirectory(
 			new File(sourceFolder, childDirName),
