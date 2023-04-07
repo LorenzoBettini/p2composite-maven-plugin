@@ -35,7 +35,7 @@ public class P2CopyMojoTest {
 		runMojo(pom);
 
 		File expectedOutputDirectory = new File(pom.getAbsoluteFile(), outputFolder);
-		File expectedCopiedDirectory = new File(expectedOutputDirectory, "repository");
+		File expectedCopiedDirectory = new File(expectedOutputDirectory, "child1");
 		assertThat(expectedCopiedDirectory)
 			.isNotEmptyDirectory();
 	}
@@ -45,7 +45,7 @@ public class P2CopyMojoTest {
 		String projectPath = "project-copy-repository-with-options";
 		String outputFolder = "target/customrepo";
 		File pom = getPom(projectPath);
-		prepareSourceDirectory(TEST_REPOS, projectPath, "target", "child1");
+		prepareSourceDirectory(TEST_REPOS, projectPath, "target", "myrepo");
 		runMojo(pom);
 
 		File expectedOutputDirectory = new File(pom.getAbsoluteFile(), outputFolder);

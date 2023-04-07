@@ -11,7 +11,8 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
 /**
- * Goal which copies the child repository to the final output directory.
+ * Goal which copies the child repository to the final output directory
+ * with a specified destination name.
  * 
  * @author Lorenzo Bettini
  */
@@ -24,15 +25,23 @@ public class P2CopyMojo extends AbstractMojo {
 	private File sourceDirectory;
 
 	/**
-	 * Destination directory.
+	 * Name of the destination directory.
+	 */
+	@Parameter(required = true)
+	private String copyAs;
+
+	/**
+	 * Where to copy the repository.
 	 */
 	@Parameter(defaultValue = "${project.build.directory}/compositerepo", property = "outputDir", required = true)
 	private File outputDirectory;
 
 	public void execute() throws MojoExecutionException {
 		try {
-			getLog().info("Copying " + sourceDirectory + " to " + outputDirectory);
-			FileUtils.copyDirectoryToDirectory(sourceDirectory, outputDirectory);
+			File destination = new File(outputDirectory, copyAs);
+			getLog().info("Copying contents of " + sourceDirectory);
+			getLog().info("Into " + destination);
+			FileUtils.copyDirectory(sourceDirectory, destination);
 			getLog().info("Done");
 		} catch (IOException e) {
 			throw new MojoExecutionException("Error creating composite repository", e);

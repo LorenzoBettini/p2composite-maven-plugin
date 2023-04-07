@@ -16,7 +16,8 @@
 				<groupId>io.github.lorenzobettini.p2utils</groupId>
 				<artifactId>p2composite-maven-plugin</artifactId>
 				<configuration>
-					<sourceDirectory>target/child1</sourceDirectory>
+					<copyAs>child1</copyAs>
+					<sourceDirectory>target/myrepo</sourceDirectory>
 					<outputDirectory>target/customrepo</outputDirectory>
 				</configuration>
 			</plugin>
