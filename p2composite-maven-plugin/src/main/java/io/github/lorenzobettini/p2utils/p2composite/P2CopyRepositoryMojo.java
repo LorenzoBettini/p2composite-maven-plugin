@@ -3,7 +3,6 @@ package io.github.lorenzobettini.p2utils.p2composite;
 import java.io.File;
 import java.io.IOException;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
@@ -39,11 +38,7 @@ public class P2CopyRepositoryMojo extends AbstractMojo {
 
 	public void execute() throws MojoExecutionException {
 		try {
-			File destination = new File(outputDirectory, copyAs);
-			getLog().info("Copying contents of " + sourceDirectory);
-			getLog().info("Into " + destination);
-			FileUtils.copyDirectory(sourceDirectory, destination);
-			getLog().info("Done");
+			P2CopyUtils.copyDirectoryContentsAs(sourceDirectory, outputDirectory, copyAs);
 		} catch (IOException e) {
 			throw new MojoExecutionException("Error creating composite repository", e);
 		}

@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
@@ -34,10 +33,7 @@ public class P2CompositeAddRepositoryMojo extends AbstractP2CompositeMojo {
 
 	public void execute() throws MojoExecutionException {
 		try {
-			File destination = new File(outputDirectory, childName);
-			getLog().info("Copying contents of " + sourceDirectory);
-			getLog().info("Into " + destination);
-			FileUtils.copyDirectory(sourceDirectory, destination);
+			P2CopyUtils.copyDirectoryContentsAs(sourceDirectory, outputDirectory, childName);
 			compositeRepositoryApplication.addDestination(outputDirectory, name, atomic, compressed);
 			compositeRepositoryApplication.addChild(childName);
 			compositeRepositoryApplication.run();

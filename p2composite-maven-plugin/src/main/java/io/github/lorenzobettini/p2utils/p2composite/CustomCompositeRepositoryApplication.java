@@ -36,7 +36,7 @@ public class CustomCompositeRepositoryApplication extends CompositeRepositoryApp
 
 	private File outputDirectory;
 
-	final Logger logger = LoggerFactory.getLogger(CustomCompositeRepositoryApplication.class);
+	private final Logger logger = LoggerFactory.getLogger(CustomCompositeRepositoryApplication.class);
 
 	@Inject
 	public CustomCompositeRepositoryApplication(IProvisioningAgent agent) {
