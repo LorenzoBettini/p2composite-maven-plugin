@@ -21,8 +21,8 @@
 				<executions>
 					<execution>
 						<id>add-repository</id>
-						<phase>package</phase>
 						<goals>
+							<!-- goal binds by default to phase "package" -->
 							<goal>add-repository</goal>
 						</goals>
 					</execution>
