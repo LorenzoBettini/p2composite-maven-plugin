@@ -222,7 +222,9 @@
 					IMPORTANT: if mvn is not in a standard location, pass -Dmaven.home=...
 					If mvn is in -Dmaven.home=/opt/homebrew/bin/mvn, pass
 					-Dmaven.home=/opt/homebrew
-					Note: without the "bin"
+					Note: without the "bin".
+					For forcing a Java version ("bin/java" will be searched for):
+					-Dinvoker.javaHome=/opt/homebrew/opt/openjdk@17
 					-->
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
