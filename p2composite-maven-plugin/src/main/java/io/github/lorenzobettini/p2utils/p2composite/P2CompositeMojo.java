@@ -13,7 +13,8 @@ import org.eclipse.equinox.p2.core.ProvisionException;
 
 /**
  * Goal which creates or updates an Eclipse p2 composite site, by
- * adding/removing child repositories.
+ * adding/removing child repositories. If no child is specified for addition and
+ * removal, the goal will simply create an empty p2 composite site.
  * 
  * @author Lorenzo Bettini
  */
