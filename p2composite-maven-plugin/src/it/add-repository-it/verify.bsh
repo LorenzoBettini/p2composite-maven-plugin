@@ -1,0 +1,7 @@
+import java.io.File;
+import io.github.lorenzobettini.p2utils.p2composite.TestUtils;
+
+File expectedOutputDirectory = new File( basedir, "composite");
+TestUtils.assertGeneratedCompositeFilesCompressed(expectedOutputDirectory);
+TestUtils.assertGeneratedChildrenCompressed(expectedOutputDirectory, true,
+	new String[] {"child1"});
