@@ -23,7 +23,7 @@
 						<id>copy-and-run</id>
 						<phase>package</phase>
 						<goals>
-							<goal>copy</goal>
+							<goal>copy-repository</goal>
 							<goal>run</goal>
 						</goals>
 					</execution>

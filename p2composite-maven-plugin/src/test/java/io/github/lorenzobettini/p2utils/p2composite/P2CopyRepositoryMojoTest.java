@@ -11,7 +11,7 @@ import org.apache.maven.plugin.testing.MojoRule;
 import org.junit.Rule;
 import org.junit.Test;
 
-public class P2CopyMojoTest {
+public class P2CopyRepositoryMojoTest {
 	private static final String TARGET_TEST_CLASSES = "target/test-classes/";
 	private static final String TEST_REPOS = TARGET_TEST_CLASSES + "test-repos";
 
@@ -60,8 +60,8 @@ public class P2CopyMojoTest {
 			new File(TARGET_TEST_CLASSES + projectPath, outputFolder));
 	}
 
-	private P2CopyMojo runMojo(File pom) throws Exception {
-		P2CopyMojo myMojo = rule.lookupConfiguredMojo(pom, "copy");
+	private P2CopyRepositoryMojo runMojo(File pom) throws Exception {
+		P2CopyRepositoryMojo myMojo = rule.lookupConfiguredMojo(pom, "copy-repository");
 		assertNotNull(myMojo);
 		myMojo.execute();
 		return myMojo;

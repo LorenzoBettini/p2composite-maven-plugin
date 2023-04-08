@@ -17,8 +17,8 @@ import org.apache.maven.plugins.annotations.Parameter;
  * 
  * @author Lorenzo Bettini
  */
-@Mojo(name = "copy", defaultPhase = LifecyclePhase.PACKAGE)
-public class P2CopyMojo extends AbstractMojo {
+@Mojo(name = "copy-repository", defaultPhase = LifecyclePhase.PACKAGE)
+public class P2CopyRepositoryMojo extends AbstractMojo {
 	/**
 	 * Directory of the p2 repository to copy.
 	 */
