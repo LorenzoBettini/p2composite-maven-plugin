@@ -21,9 +21,9 @@
 				<executions>
 					<execution>
 						<id>copy-and-run</id>
-						<phase>package</phase>
+						<!-- goals bind by default to phase "package" -->
 						<goals>
-							<goal>copy</goal>
+							<goal>copy-repository</goal>
 							<goal>run</goal>
 						</goals>
 					</execution>

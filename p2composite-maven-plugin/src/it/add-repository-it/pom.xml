@@ -25,16 +25,14 @@
 						<id>copy-and-run</id>
 						<phase>package</phase>
 						<goals>
-							<goal>copy-repository</goal>
-							<goal>run</goal>
+							<goal>add-repository</goal>
 						</goals>
 					</execution>
 				</executions>
 				<configuration>
 					<sourceDirectory>test-repo</sourceDirectory>
-					<copyAs>child1</copyAs>
+					<childName>child1</childName>
 					<outputDirectory>composite</outputDirectory>
-					<childrenToAdd>child1</childrenToAdd>
 					<atomic>true</atomic>
 					<compressed>true</compressed>
 				</configuration>
