@@ -21,6 +21,7 @@
 		<maven.compiler.source>17</maven.compiler.source>
 		<maven.compiler.target>17</maven.compiler.target>
 		<maven.version>3.8.6</maven.version>
+		<tycho-version>3.0.4</tycho-version>
 	</properties>
 
 	<distributionManagement>
@@ -39,16 +40,23 @@
 	</distributionManagement>
 
 	<dependencies>
+		<!-- It's a transitive dependency of p2-maven-plugin,
+			but we use it, so better make it explicit -->
 		<dependency>
-			<groupId>org.eclipse.tycho</groupId>
-			<artifactId>p2-maven-plugin</artifactId>
-			<version>3.0.4</version>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.11.0</version>
 		</dependency>
 		<!-- For CompositeRepositoryApplication -->
 		<dependency>
 			<groupId>org.eclipse.platform</groupId>
 			<artifactId>org.eclipse.equinox.p2.repository.tools</artifactId>
 			<version>2.3.300</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.tycho</groupId>
+			<artifactId>p2-maven-plugin</artifactId>
+			<version>${tycho-version}</version>
 		</dependency>
 		<!-- Force this version of dependency required by org.eclipse.sisu.osgi.connect
 			To avoid:
@@ -98,12 +106,6 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
-			<version>2.11.0</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
 			<groupId>org.assertj</groupId>
 			<artifactId>assertj-core</artifactId>
 			<version>3.23.1</version>
@@ -113,6 +115,12 @@
 			<groupId>org.apache.maven.plugin-testing</groupId>
 			<artifactId>maven-plugin-testing-harness</artifactId>
 			<version>4.0.0-alpha-1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>1.7.33</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -251,7 +259,7 @@
 							<scope>provided</scope>
 							<goals>
 								<goal>clean</goal>
-								<goal>test-compile</goal>
+								<goal>package</goal>
 							</goals>
 						</configuration>
 						<executions>
