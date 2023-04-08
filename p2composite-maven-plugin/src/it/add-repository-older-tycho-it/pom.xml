@@ -16,12 +16,20 @@
 		<maven.compiler.source>@maven.compiler.source@</maven.compiler.source>
 		<maven.compiler.target>@maven.compiler.target@</maven.compiler.target>
 		<tycho-version>2.7.5</tycho-version>
+		<eclipse-version>2023-03</eclipse-version>
 	</properties>
 
 	<modules>
-		<module>bundle-project</module>
 		<module>site-project</module>
 	</modules>
+
+	<repositories>
+		<repository>
+			<id>${eclipse-version}</id>
+			<layout>p2</layout>
+			<url>https://download.eclipse.org/releases/${eclipse-version}</url>
+		</repository>
+	</repositories>
 
 	<build>
 		<plugins>
@@ -30,41 +38,6 @@
 				<artifactId>tycho-maven-plugin</artifactId>
 				<version>${tycho-version}</version>
 				<extensions>true</extensions>
-			</plugin>
-			<plugin>
-				<groupId>org.eclipse.tycho</groupId>
-				<artifactId>tycho-compiler-plugin</artifactId>
-				<version>${tycho-version}</version>
-			</plugin>
-			<plugin>
-				<groupId>org.eclipse.tycho</groupId>
-				<artifactId>target-platform-configuration</artifactId>
-				<version>${tycho-version}</version>
-				<configuration>
-					<target>
-						<file>
-							${project.basedir}/../tp.target
-						</file>
-					</target>
-					<environments>
-						<environment>
-							<os>macosx</os>
-							<ws>cocoa</ws>
-							<arch>x86_64</arch>
-						</environment>
-						<environment>
-							<os>win32</os>
-							<ws>win32</ws>
-							<arch>x86_64</arch>
-						</environment>
-						<environment>
-							<os>linux</os>
-							<ws>gtk</ws>
-							<arch>x86_64</arch>
-						</environment>
-					</environments>
-					<executionEnvironment>JavaSE-17</executionEnvironment>
-				</configuration>
 			</plugin>
 		</plugins>
 		<pluginManagement>

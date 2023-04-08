@@ -1,8 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: Bundle-project
-Bundle-SymbolicName: bundle-project
-Bundle-Vendor: Lorenzo Bettini
-Bundle-Version: 1.0.0.qualifier
-Automatic-Module-Name: bundle.project
-Bundle-RequiredExecutionEnvironment: JavaSE-17
