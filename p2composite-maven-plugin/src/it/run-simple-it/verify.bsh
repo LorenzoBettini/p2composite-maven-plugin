@@ -5,4 +5,4 @@ File expectedOutputDirectory = new File( basedir, "target/compositerepo");
 TestUtils.assertGeneratedCompositeFiles(expectedOutputDirectory);
 TestUtils.assertGeneratedChildren(expectedOutputDirectory, false,
 	"Composite Artifact Repository",
-	new String[] {"child1"});
+	new String[] {"../test-repos/child1"});

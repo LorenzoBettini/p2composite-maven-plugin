@@ -31,7 +31,7 @@
 				</executions>
 				<configuration>
 					<childrenToAdd>
-						<childToAdd>child1</childToAdd>
+						<childToAdd>../test-repos/child1</childToAdd>
 					</childrenToAdd>
 				</configuration>
 			</plugin>
