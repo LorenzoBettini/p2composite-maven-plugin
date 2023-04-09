@@ -70,4 +70,19 @@ public class TestUtils {
 		return new String(is.readAllBytes());
 	}
 
+	public static void assertGeneratedChildrenDoNotContain(File expectedOutputDirectory, String... nonExpectedChildren) {
+		var compositeArtifactsContents = assertThat(new File(expectedOutputDirectory, "compositeArtifacts.xml"))
+			.content();
+		var compositeContentContents = assertThat(new File(expectedOutputDirectory, "compositeContent.xml"))
+			.content();
+		var nonExpectedChildrenLocations = Stream.of(nonExpectedChildren)
+				.map(it -> String.format("<child location='%s'/>", it))
+				.toList();
+		compositeArtifactsContents
+			.asString()
+			.doesNotContain(nonExpectedChildrenLocations);
+		compositeContentContents
+			.asString()
+			.doesNotContain(nonExpectedChildrenLocations);
+	}
 }
