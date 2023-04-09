@@ -29,11 +29,6 @@
 						</goals>
 					</execution>
 				</executions>
-				<configuration>
-					<childrenToAdd>
-						<childToAdd>child1</childToAdd>
-					</childrenToAdd>
-				</configuration>
 			</plugin>
 		</plugins>
 	</build>
