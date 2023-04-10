@@ -16,6 +16,31 @@
 	<build>
 		<plugins>
 			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>3.0.2</version>
+				<executions>
+					<execution>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<resources>
+								<resource>
+									<directory>tofilter</directory>
+									<filtering>true</filtering>
+								</resource>
+							</resources>
+							<outputDirectory>.</outputDirectory>
+							<useDefaultDelimiters>false</useDefaultDelimiters>
+							<delimiters>
+								<delimiter>@</delimiter>
+							</delimiters>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
 				<groupId>@project.groupId@</groupId>
 				<artifactId>@project.artifactId@</artifactId>
 				<executions>
@@ -48,6 +73,28 @@
 					<atomic>true</atomic>
 					<compressed>false</compressed>
 				</configuration>
+			</plugin>
+			 <plugin>
+				<groupId>org.eclipse.tycho.extras</groupId>
+				<artifactId>target-platform-validation-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<executions>
+					<!-- Binds by default to the lifecycle phase: validate. -->
+					<execution>
+						<id>validate-target-platform</id>
+						<goals>
+							<goal>validate-target-platform</goal>
+						</goals>
+						<phase>package</phase>
+						<configuration>
+							<targetFiles>
+								<targetFile>validate.target</targetFile>
+							</targetFiles>
+							<checkDependencies>true</checkDependencies>
+							<checkProvisioning>true</checkProvisioning>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 			<!-- This hangs when running during the ITs
 			<plugin>
