@@ -2,7 +2,7 @@ image:
   file: .gitpod.Dockerfile
 
 tasks:
-  - init: mvn package -DskipTests
+  - init: mvn -f p2composite-maven-plugin package -DskipTests
 
 vscode:
   extensions:
