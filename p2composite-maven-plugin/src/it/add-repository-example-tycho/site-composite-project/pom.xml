@@ -15,6 +15,8 @@
 
 	<build>
 		<plugins>
+			<!-- The local path in .target file must have / instead of \
+				even on Windows -->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>build-helper-maven-plugin</artifactId>
@@ -36,6 +38,8 @@
 					</execution>
 				</executions>
 			</plugin>
+			<!-- Preprocess the tofilter/validate.target file so that it
+				points to the local p2 composite repository -->
 			<plugin>
 				<artifactId>maven-resources-plugin</artifactId>
 				<version>3.0.2</version>
@@ -61,6 +65,9 @@
 					</execution>
 				</executions>
 			</plugin>
+			<!-- Creates a p2 composite repository with the contents of
+				site1-project repository (containing bundle1-project) and
+				site2-project repository (containing bundle2-project) -->
 			<plugin>
 				<groupId>@project.groupId@</groupId>
 				<artifactId>@project.artifactId@</artifactId>
@@ -95,6 +102,8 @@
 					<compressed>false</compressed>
 				</configuration>
 			</plugin>
+			<!-- Makes sure that the dependencies of bundle2-project
+				(i.e., bundle1-project) is part of the p2 composite repository -->
 			<plugin>
 				<groupId>org.eclipse.tycho.extras</groupId>
 				<artifactId>target-platform-validation-plugin</artifactId>
@@ -117,81 +126,6 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!-- This hangs when running during the ITs
-			<plugin>
-			<groupId>org.eclipse.tycho.extras</groupId>
-			<artifactId>tycho-eclipserun-plugin</artifactId>
-			<version>${tycho-version}</version>
-				<executions>
-					<execution>
-			<id>verify-repository-installation</id>
-						<configuration>
-			<jvmArgs>-Declipse.p2.mirrors=true</jvmArgs>
-							<applicationsArgs>
-			<args>-consoleLog</args>
-								<args>-application</args>
-			<args>org.eclipse.equinox.p2.director</args>
-								<args>-nosplash</args>
-			<args>-destination</args>
-			<args>${project.build.directory}/installed-plugins</args>
-			<args>-repository</args>
-			<args>file:/${project.build.directory}/repository</args>
-			<args>-installIUs</args>
-								<args>bundle2-project</args>
-			</applicationsArgs>
-						</configuration>
-						<goals>
-			<goal>eclipse-run</goal>
-						</goals>
-						<phase>package</phase>
-			</execution>
-				</executions>
-				<configuration>
-					<repositories>
-			<repository>
-							<id>${eclipse-version}</id>
-							<layout>p2</layout>
-			<url>
-								https://download.eclipse.org/releases/${eclipse-version}</url>
-			</repository>
-					</repositories>
-					<dependencies>
-						<dependency>
-			<artifactId>org.eclipse.ant.core</artifactId>
-			<type>eclipse-plugin</type>
-						</dependency>
-						<dependency>
-			<artifactId>org.apache.ant</artifactId>
-							<type>eclipse-plugin</type>
-			</dependency>
-						<dependency>
-			<artifactId>org.eclipse.equinox.p2.repository.tools</artifactId>
-			<type>eclipse-plugin</type>
-						</dependency>
-						<dependency>
-			<artifactId>org.eclipse.equinox.p2.core.feature</artifactId>
-			<type>eclipse-feature</type>
-						</dependency>
-						<dependency>
-			<artifactId>org.eclipse.equinox.p2.extras.feature</artifactId>
-			<type>eclipse-feature</type>
-						</dependency>
-						<dependency>
-			<artifactId>org.eclipse.osgi.compatibility.state</artifactId>
-			<type>eclipse-plugin</type>
-						</dependency>
-						<dependency>
-			<artifactId>org.eclipse.rcp</artifactId>
-			<type>eclipse-feature</type>
-						</dependency>
-						<dependency>
-			<artifactId>org.eclipse.core.net</artifactId>
-			<type>eclipse-plugin</type>
-						</dependency>
-					</dependencies>
-			</configuration>
-			</plugin>
-			-->
 		</plugins>
 	</build>
 </project>
