@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>io.github.lorenzobettini.p2utils.it</groupId>
+	<artifactId>add-repository-example-tycho</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<description>Creates a p2 composite from two repositories.</description>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>@maven.compiler.source@</maven.compiler.source>
+		<maven.compiler.target>@maven.compiler.target@</maven.compiler.target>
+		<tycho-version>@tycho-version@</tycho-version>
+		<eclipse-version>2023-03</eclipse-version>
+	</properties>
+
+	<modules>
+		<module>bundle1-project</module>
+		<module>bundle2-project</module>
+		<module>site1-project</module>
+		<module>site2-project</module>
+		<module>site-composite-project</module>
+	</modules>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-maven-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<extensions>true</extensions>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-compiler-plugin</artifactId>
+				<version>${tycho-version}</version>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>target-platform-configuration</artifactId>
+				<version>${tycho-version}</version>
+				<configuration>
+					<target>
+						<file>
+							${project.basedir}/../tp.target
+						</file>
+					</target>
+					<environments>
+						<environment>
+							<os>macosx</os>
+							<ws>cocoa</ws>
+							<arch>x86_64</arch>
+						</environment>
+						<environment>
+							<os>win32</os>
+							<ws>win32</ws>
+							<arch>x86_64</arch>
+						</environment>
+						<environment>
+							<os>linux</os>
+							<ws>gtk</ws>
+							<arch>x86_64</arch>
+						</environment>
+					</environments>
+					<executionEnvironment>JavaSE-17</executionEnvironment>
+				</configuration>
+			</plugin>
+		</plugins>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>@project.groupId@</groupId>
+					<artifactId>@project.artifactId@</artifactId>
+					<version>@project.version@</version>
+					<!-- setting extension to true is crucial to
+						make it coexist with Tycho, and avoid
+						ClassCastExceptions due to different ClassRealms -->
+					<extensions>true</extensions>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+</project>

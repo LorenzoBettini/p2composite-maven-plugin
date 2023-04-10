@@ -1,0 +1,8 @@
+import java.io.File;
+import io.github.lorenzobettini.p2utils.p2composite.TestUtils;
+
+File expectedOutputDirectory = new File( basedir, "target/compositerepo");
+TestUtils.assertGeneratedCompositeFiles(expectedOutputDirectory);
+TestUtils.assertGeneratedChildren(expectedOutputDirectory, false,
+	"Composite Artifact Repository",
+	new String[] {"../test-repos/child1"});

@@ -222,18 +222,23 @@
 					IMPORTANT: if mvn is not in a standard location, pass -Dmaven.home=...
 					If mvn is in -Dmaven.home=/opt/homebrew/bin/mvn, pass
 					-Dmaven.home=/opt/homebrew
-					Note: without the "bin"
+					Note: without the "bin".
+					For forcing a Java version ("bin/java" will be searched for):
+					-Dinvoker.javaHome=/opt/homebrew/opt/openjdk@17
 					-->
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-invoker-plugin</artifactId>
 						<version>3.5.1</version>
 						<configuration>
-							<debug>true</debug>
+							<!-- <debug>true</debug> -->
 							<cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
 							<pomIncludes>
 								<pomInclude>*/pom.xml</pomInclude>
 							</pomIncludes>
+							<!-- This way, we can use Java test utils in verify.bsh
+								BeanShell script files -->
+							<addTestClassPath>true</addTestClassPath>
 							<postBuildHookScript>verify</postBuildHookScript>
 							<localRepositoryPath>
 								${project.build.directory}/local-repo</localRepositoryPath>

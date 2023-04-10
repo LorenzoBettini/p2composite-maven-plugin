@@ -22,11 +22,14 @@ import org.slf4j.LoggerFactory;
  * Custom {@link CompositeRepositoryApplication} to be injected in a mojo, with
  * some easier to use methods.
  * 
+ * It must NOT be a {@link Singleton} because {@link CompositeRepositoryApplication}
+ * resets the lists of children to add/remove to null so using the same instance again
+ * would lead to a {@link NullPointerException}.
+ * 
  * @author Lorenzo Bettini
  *
  */
 @Named
-@Singleton
 public class CustomCompositeRepositoryApplication extends CompositeRepositoryApplication {
 
 	private static final String P2_INDEX_CONTENTS = """
