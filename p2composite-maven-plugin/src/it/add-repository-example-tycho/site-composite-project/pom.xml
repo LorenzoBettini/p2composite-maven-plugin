@@ -16,6 +16,27 @@
 	<build>
 		<plugins>
 			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>3.3.0</version>
+				<executions>
+					<execution>
+						<id>regex-property</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>regex-property</goal>
+						</goals>
+						<configuration>
+							<name>composite-repository</name>
+							<value>${project.build.directory}/repository</value>
+							<regex>\\</regex>
+							<replacement>/</replacement>
+							<failIfNoMatch>false</failIfNoMatch>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
 				<artifactId>maven-resources-plugin</artifactId>
 				<version>3.0.2</version>
 				<executions>
@@ -74,7 +95,7 @@
 					<compressed>false</compressed>
 				</configuration>
 			</plugin>
-			 <plugin>
+			<plugin>
 				<groupId>org.eclipse.tycho.extras</groupId>
 				<artifactId>target-platform-validation-plugin</artifactId>
 				<version>${tycho-version}</version>
@@ -98,77 +119,77 @@
 			</plugin>
 			<!-- This hangs when running during the ITs
 			<plugin>
-				<groupId>org.eclipse.tycho.extras</groupId>
-				<artifactId>tycho-eclipserun-plugin</artifactId>
-				<version>${tycho-version}</version>
+			<groupId>org.eclipse.tycho.extras</groupId>
+			<artifactId>tycho-eclipserun-plugin</artifactId>
+			<version>${tycho-version}</version>
 				<executions>
 					<execution>
-						<id>verify-repository-installation</id>
+			<id>verify-repository-installation</id>
 						<configuration>
-							<jvmArgs>-Declipse.p2.mirrors=true</jvmArgs>
+			<jvmArgs>-Declipse.p2.mirrors=true</jvmArgs>
 							<applicationsArgs>
-								<args>-consoleLog</args>
+			<args>-consoleLog</args>
 								<args>-application</args>
-								<args>org.eclipse.equinox.p2.director</args>
+			<args>org.eclipse.equinox.p2.director</args>
 								<args>-nosplash</args>
-								<args>-destination</args>
-								<args>${project.build.directory}/installed-plugins</args>
-								<args>-repository</args>
-								<args>file:/${project.build.directory}/repository</args>
-								<args>-installIUs</args>
+			<args>-destination</args>
+			<args>${project.build.directory}/installed-plugins</args>
+			<args>-repository</args>
+			<args>file:/${project.build.directory}/repository</args>
+			<args>-installIUs</args>
 								<args>bundle2-project</args>
-							</applicationsArgs>
+			</applicationsArgs>
 						</configuration>
 						<goals>
-							<goal>eclipse-run</goal>
+			<goal>eclipse-run</goal>
 						</goals>
 						<phase>package</phase>
-					</execution>
+			</execution>
 				</executions>
 				<configuration>
 					<repositories>
-						<repository>
+			<repository>
 							<id>${eclipse-version}</id>
 							<layout>p2</layout>
-							<url>
+			<url>
 								https://download.eclipse.org/releases/${eclipse-version}</url>
-						</repository>
+			</repository>
 					</repositories>
 					<dependencies>
 						<dependency>
-							<artifactId>org.eclipse.ant.core</artifactId>
+			<artifactId>org.eclipse.ant.core</artifactId>
+			<type>eclipse-plugin</type>
+						</dependency>
+						<dependency>
+			<artifactId>org.apache.ant</artifactId>
 							<type>eclipse-plugin</type>
+			</dependency>
+						<dependency>
+			<artifactId>org.eclipse.equinox.p2.repository.tools</artifactId>
+			<type>eclipse-plugin</type>
 						</dependency>
 						<dependency>
-							<artifactId>org.apache.ant</artifactId>
-							<type>eclipse-plugin</type>
+			<artifactId>org.eclipse.equinox.p2.core.feature</artifactId>
+			<type>eclipse-feature</type>
 						</dependency>
 						<dependency>
-							<artifactId>org.eclipse.equinox.p2.repository.tools</artifactId>
-							<type>eclipse-plugin</type>
+			<artifactId>org.eclipse.equinox.p2.extras.feature</artifactId>
+			<type>eclipse-feature</type>
 						</dependency>
 						<dependency>
-							<artifactId>org.eclipse.equinox.p2.core.feature</artifactId>
-							<type>eclipse-feature</type>
+			<artifactId>org.eclipse.osgi.compatibility.state</artifactId>
+			<type>eclipse-plugin</type>
 						</dependency>
 						<dependency>
-							<artifactId>org.eclipse.equinox.p2.extras.feature</artifactId>
-							<type>eclipse-feature</type>
+			<artifactId>org.eclipse.rcp</artifactId>
+			<type>eclipse-feature</type>
 						</dependency>
 						<dependency>
-							<artifactId>org.eclipse.osgi.compatibility.state</artifactId>
-							<type>eclipse-plugin</type>
-						</dependency>
-						<dependency>
-							<artifactId>org.eclipse.rcp</artifactId>
-							<type>eclipse-feature</type>
-						</dependency>
-						<dependency>
-							<artifactId>org.eclipse.core.net</artifactId>
-							<type>eclipse-plugin</type>
+			<artifactId>org.eclipse.core.net</artifactId>
+			<type>eclipse-plugin</type>
 						</dependency>
 					</dependencies>
-				</configuration>
+			</configuration>
 			</plugin>
 			-->
 		</plugins>

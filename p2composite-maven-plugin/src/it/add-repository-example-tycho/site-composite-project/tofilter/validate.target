@@ -4,7 +4,7 @@
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="bundle2-project" version="0.0.0"/>
-<repository location="file:/@project.build.directory@/repository"/>
+<repository location="file:/@composite-repository@"/>
 </location>
 </locations>
 </target>
