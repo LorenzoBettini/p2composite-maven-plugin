@@ -1,0 +1,8 @@
+import java.io.File;
+import io.github.lorenzobettini.p2utils.p2composite.TestUtils;
+
+File expectedOutputDirectory = new File(basedir, "site-composite-project/target/repository");
+TestUtils.assertGeneratedCompositeFiles(expectedOutputDirectory);
+TestUtils.assertGeneratedChildren(expectedOutputDirectory, true,
+	"Composite Repository",
+	new String[] {"child1", "child2"});
