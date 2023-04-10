@@ -36,3 +36,10 @@ jobs:
       - name: 'Build and test'
         run: mvn verify -Prun-its
         working-directory: p2composite-maven-plugin
+
+      - name: Archive IT Results
+        uses: actions/upload-artifact@v2
+        if: ${{ failure() || cancelled() }}
+        with:
+          name: it-results-${{ runner.os }}
+          path: '**/target/it'
