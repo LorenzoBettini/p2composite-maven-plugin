@@ -225,6 +225,10 @@
 					Note: without the "bin".
 					For forcing a Java version ("bin/java" will be searched for):
 					-Dinvoker.javaHome=/opt/homebrew/opt/openjdk@17
+					For running a single IT:
+					-Dinvoker.test=...name of directory in src/it...
+					For example,
+					-Dinvoker.test=add-repository-example-tycho
 					-->
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
