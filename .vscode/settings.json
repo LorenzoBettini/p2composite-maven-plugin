@@ -5,5 +5,6 @@
             "alias": "full-build with ITs",
             "command": "verify -Prun-its"
         }
-    ]
+    ],
+    "java.configuration.updateBuildConfiguration": "interactive"
 }
