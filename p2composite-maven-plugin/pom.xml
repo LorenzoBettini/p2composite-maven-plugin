@@ -25,7 +25,7 @@
 		<maven.compiler.source>17</maven.compiler.source>
 		<maven.compiler.target>17</maven.compiler.target>
 		<maven.version>3.8.6</maven.version>
-		<tycho-version>3.0.4</tycho-version>
+		<tycho-version>4.0.4</tycho-version>
 	</properties>
 
 	<dependencies>
@@ -34,13 +34,13 @@
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
-			<version>2.11.0</version>
+			<version>2.15.1</version>
 		</dependency>
 		<!-- For CompositeRepositoryApplication -->
 		<dependency>
 			<groupId>org.eclipse.platform</groupId>
 			<artifactId>org.eclipse.equinox.p2.repository.tools</artifactId>
-			<version>2.3.300</version>
+			<version>2.4.100</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.tycho</groupId>
@@ -85,7 +85,7 @@
 		<dependency>
 			<groupId>org.apache.maven.plugin-tools</groupId>
 			<artifactId>maven-plugin-annotations</artifactId>
-			<version>3.8.1</version>
+			<version>3.10.2</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -97,20 +97,30 @@
 		<dependency>
 			<groupId>org.assertj</groupId>
 			<artifactId>assertj-core</artifactId>
-			<version>3.23.1</version>
+			<version>3.24.2</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.maven.plugin-testing</groupId>
 			<artifactId>maven-plugin-testing-harness</artifactId>
-			<version>4.0.0-alpha-1</version>
+			<version>4.0.0-alpha-2</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-simple</artifactId>
-			<version>1.7.33</version>
+			<version>2.0.9</version>
 			<scope>test</scope>
+		</dependency>
+		<!--
+			See https://www.slf4j.org/codes.html#StaticLoggerBinder 
+			If you place a logging backend which targets slf4j-api 2.0.x,
+			you need slf4j-api-2.x.jar on the classpath.
+		-->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>2.0.9</version>
 		</dependency>
 	</dependencies>
 
