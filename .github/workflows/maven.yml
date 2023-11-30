@@ -34,7 +34,7 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
 
       - name: 'Build and test'
-        run: mvn verify -Prun-its
+        run: mvn --show-version verify -Prun-its
         working-directory: p2composite-maven-plugin
 
       - name: Archive IT Results
