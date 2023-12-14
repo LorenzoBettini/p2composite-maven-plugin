@@ -25,6 +25,13 @@ jobs:
         with:
           java-version: 17
           distribution: 'temurin'
+      # for Tycho 4 we need Maven 3.9, and for maven plugin ITs
+      # it's best to have it installed in the system instead of
+      # using the Maven wrapper
+      - name: Set up Maven
+        uses: stCarolas/setup-maven@v4.5
+        with:
+          maven-version: 3.9.5
 
       - name: 'Cache Maven packages'
         uses: actions/cache@v3
