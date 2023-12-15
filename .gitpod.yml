@@ -13,3 +13,4 @@ vscode:
     - vscjava.vscode-java-test
     - vscjava.vscode-maven
     - eamodio.gitlens
+    - redhat.fabric8-analytics
